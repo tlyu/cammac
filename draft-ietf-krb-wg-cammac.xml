@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="US-ASCII"?>
 <!-- This template is for creating an Internet Draft using xml2rfc,
      which is available here: http://xml.resource.org. -->
-<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+<!DOCTYPE rfc PUBLIC "-//IETF//DTD RFC 2629//EN" "rfc2629.dtd" [
 <!-- One method to get references from the online citation libraries.
      There has to be one entity for each item to be referenced. 
      An alternate method (rfc include) is described in the references. -->
@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-krb-wg-cammac-00"
+<rfc category="std" docName="draft-ietf-krb-wg-cammac-01"
      ipr="trust200902">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -96,7 +96,7 @@
       </address>
     </author>
 
-    <date day="8" month="Feb" year="2012" />
+    <date day="9" month="Feb" year="2012" />
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -124,9 +124,12 @@
          keywords will be used for the search engine. -->
 
     <abstract>
-      <t>This draft proposes a new Authorization Data container for the
-      Kerberos V5 protocol. This container allows to Authenticate the contents
-      using multiple MACs</t>
+      <t>
+	Abstract: This document proposes a Kerberos Authorization Data
+	container similar to AD-KDC-ISSUED, but that allows for
+	multiple MACs or signatures on the contained Authorization
+	Data elements.
+      </t>
     </abstract>
   </front>
 

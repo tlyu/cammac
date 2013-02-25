@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-krb-wg-cammac-03"
+<rfc category="std" docName="draft-ietf-krb-wg-cammac-04"
      ipr="trust200902" updates="4120">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -98,14 +98,14 @@
       </address>
     </author>
 
-    <date month="Oct" year="2012" />
+    <date month="Feb" year="2013" />
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
-	 in the current day and month for you. If the year is not the current one, it is 
-	 necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
-	 purpose of calculating the expiry date).  With drafts it is normally sufficient to 
-	 specify just the year. -->
+         in the current day and month for you. If the year is not the current one, it is 
+         necessary to specify at least a month (xml2rfc assumes day="1" if not specified for the 
+         purpose of calculating the expiry date).  With drafts it is normally sufficient to 
+         specify just the year. -->
 
     <!-- Meta-data Declarations -->
 
@@ -115,7 +115,7 @@
 
     <!-- WG name at the upperleft corner of the doc,
          IETF is fine for individual submissions.  
-	 If this element is not present, the default is "Network Working Group",
+         If this element is not present, the default is "Network Working Group",
          which is used by the RFC Editor as a nod to the history of the IETF. -->
 
     <keyword>Kerberos</keyword>
@@ -127,10 +127,10 @@
 
     <abstract>
       <t>
-	Abstract: This document specifies a Kerberos Authorization
-	Data container that supersedes AD-KDC-ISSUED. It allows for
-	multiple Message Authentication Codes (MACs) or signatures to
-	authenticate the contained Authorization Data elements.
+        Abstract: This document specifies a Kerberos Authorization
+        Data container that supersedes AD-KDC-ISSUED. It allows for
+        multiple Message Authentication Codes (MACs) or signatures to
+        authenticate the contained Authorization Data elements.
       </t>
     </abstract>
   </front>
@@ -138,14 +138,14 @@
   <middle>
     <section title="Introduction">
       <t>
-	This document specifies a new Authorization Data container for
-	Kerberos, called AD-CAMMAC (Container Authenticated by
-	Multiple MACs), that supersedes AD-KDC-ISSUED. The container
-	allows both the receiving application service and the Key
-	Distribution Center (KDC) itself to verify the authenticity of
-	the contained authorization data. The AD-CAMMAC container can
-	also include additional verifiers that "trusted services" can
-	use to verify the contained authorization data.
+        This document specifies a new Authorization Data container for
+        Kerberos, called AD-CAMMAC (Container Authenticated by
+        Multiple MACs), that supersedes AD-KDC-ISSUED. The container
+        allows both the receiving application service and the Key
+        Distribution Center (KDC) itself to verify the authenticity of
+        the contained authorization data. The AD-CAMMAC container can
+        also include additional verifiers that "trusted services" can
+        use to verify the contained authorization data.
       </t>
     </section>
 
@@ -158,21 +158,21 @@
 
     <section title="Validation">
       <t>
-	Kerberos ticket authorization data are highly sensitive and
-	must be validated to insure that no tampering has
-	occurred. Although
-	authorization data are in the encrypted part of a Kerberos
-	ticket and therefore have their integrity protected by the
-	ticket encryption, clients can request that KDCs insert
-	potentially arbitrary authorization data into tickets on their
-	behalf. The Kerberos protocol specifications allow this client
-	behavior
-	because the originally envisioned usage of authorization data
-	was to serve as restrictions on the client's
-	privileges. Services that need to interpret specific
-	authorization data as granting increased privileges need some
-	way to ensure that the KDC originated those authorization
-	data.
+        Kerberos ticket authorization data are highly sensitive and
+        must be validated to insure that no tampering has
+        occurred. Although
+        authorization data are in the encrypted part of a Kerberos
+        ticket and therefore have their integrity protected by the
+        ticket encryption, clients can request that KDCs insert
+        potentially arbitrary authorization data into tickets on their
+        behalf. The Kerberos protocol specifications allow this client
+        behavior
+        because the originally envisioned usage of authorization data
+        was to serve as restrictions on the client's
+        privileges. Services that need to interpret specific
+        authorization data as granting increased privileges need some
+        way to ensure that the KDC originated those authorization
+        data.
       </t>
 
       <t> In order to validate any information, the receiving
@@ -211,12 +211,12 @@
 
     <section title="Encoding">
       <t>
-	The Kerberos protocol is defined in <xref target="RFC4120"/>
-	using Abstract Syntax Notation One (ASN.1) <xref
-	target="X.680"/><xref target="X.690"/>. As such, this
-	specification also uses the ASN.1 syntax for specifying both
-	the abstract layout of the AD-CAMMAC attributes, as well as
-	its encoding.
+        The Kerberos protocol is defined in <xref target="RFC4120"/>
+        using Abstract Syntax Notation One (ASN.1) <xref
+        target="X.680"/><xref target="X.690"/>. As such, this
+        specification also uses the ASN.1 syntax for specifying both
+        the abstract layout of the AD-CAMMAC attributes, as well as
+        its encoding.
       </t>
 
       <section title="AD-CAMMAC">
@@ -245,52 +245,91 @@
          mac            [3] Checksum
    }
 
+   AD-CAMMAC-BINDING    ::= SEQUENCE {
+        cname           [0] PrincipalName,
+        authtime        [1] KerberosTime,
+        endtime         [2] KerberosTime
+   }
+
    END
 
-   elements
-      A sequence of authorization data elements issued by the
-      KDC. These elements are the authorization data that the verifier
-      fields authenticate.
 
-   Verifier
-      A CHOICE type that currently contains only one alternative:
-      Verifier-MAC. Future extensions might add support for public-key
-      signatures.
-
-   Verifier-MAC
-      Contains a MAC computed over the encoding of the
-      AuthorizationData value in the elements field of the
-      AD-CAMMAC. The identifier, kvno, and enctype fields help the
-      recipient locate the key required for verifying the MAC.
-
-   kdc-verifier
-      A Verifier-MAC where the key is the TGS key. The checksum type
-      is the mandatory checksum type for the TGS key.
-
-   svc-verifier
-      A Verifier-MAC where the key is the long-term key of the service
-      for which the ticket is issued. The checksum type is the
-      mandatory checksum type for the long-term key of the
-      service. This field MUST be present if the service principal of
-      the ticket is not the local TGS, including when the ticket is a
-      cross-realm TGT.
-
-   other-verifiers
-      A sequence of additional verifiers. In each additional
-      Verifier-MAC, the key is the long-term key of the principal name
-      specified in the identifier field. The PrincipalName MUST be
-      present and be a valid principal in the realm. KDCs MAY add one
-      or more 'trusted service' verifiers. Unless otherwise
-      administratively configured, the 'trusted service' SHOULD be
-      found by replacing the service identifier component of the
-      principal name of the svc-verifier with 'host'. The checksum
-      type is the mandatory checksum type for the long-term key (which
-      one?) of the principal. The key usage is TBD.
-
-      	]]></artwork>
+        ]]></artwork>
 
           <postamble></postamble>
         </figure>
+        <t>
+          <list style="hanging">
+            <t hangText="elements:">
+              <vspace/>
+
+              A sequence of authorization data elements issued by the
+              KDC.  These elements are the authorization data that the
+              verifier fields authenticate.
+            </t>
+            <t hangText="Verifier:">
+              <vspace/>
+
+              A CHOICE type that currently contains only one
+              alternative: Verifier-MAC.  Future extensions might add
+              support for public-key signatures.
+            </t>
+
+            <t hangText="Verifier-MAC:">
+              <vspace/>
+
+              Contains a MAC computed over the encoding of the
+              AuthorizationData value in the elements field of the
+              AD-CAMMAC.  The identifier, kvno, and enctype fields
+              help the recipient locate the key required for verifying
+              the MAC.
+            </t>
+            <t hangText="AD-CAMMAC-BINDING:">
+              <vspace/>
+
+              An AuthorizationData element that binds the CAMMAC
+              contents to the enclosing ticket.  This
+              AuthorizationData element has ad-type number TBD, and
+              MUST be absent from the transmitted elements field of
+              the AD-CAMMAC.  It MUST be included in the computation
+              of the Verifiers as if it were the first element.
+            </t>
+            <t hangText="kdc-verifier:">
+              <vspace/>
+
+              A Verifier-MAC where the key is the TGS key.  The
+              checksum type is the mandatory checksum type for the TGS
+              key.
+            </t>
+            <t hangText="svc-verifier:">
+              <vspace/>
+
+              A Verifier-MAC where the key is the long-term key of the
+              service for which the ticket is issued.  The checksum
+              type is the mandatory checksum type for the long-term
+              key of the service.  This field MUST be present if the
+              service principal of the ticket is not the local TGS,
+              including when the ticket is a cross-realm TGT.
+            </t>
+
+            <t hangText="other-verifiers:">
+              <vspace/>
+
+              A sequence of additional verifiers.  In each additional
+              Verifier-MAC, the key is the long-term key of the
+              principal name specified in the identifier field.  The
+              PrincipalName MUST be present and be a valid principal
+              in the realm.  KDCs MAY add one or more 'trusted
+              service' verifiers.  Unless otherwise administratively
+              configured, the 'trusted service' SHOULD be found by
+              replacing the service identifier component of the
+              principal name of the svc-verifier with 'host'.  The
+              checksum type is the mandatory checksum type for the
+              long-term key (which one?) of the principal.  The key
+              usage is TBD.
+            </t>
+          </list>
+        </t>
       </section>
     </section>
 
@@ -306,33 +345,34 @@
 
     <section anchor="Security" title="Security Considerations">
       <t>
-	Although authorization data are generally conveyed within the
-	encrypted part of a ticket and are thereby protected by the
-	existing encryption methods on the ticket, some authorization
-	data requires the additional protection provided by the
-	CAMMAC.
+        Although authorization data are generally conveyed within the
+        encrypted part of a ticket and are thereby protected by the
+        existing encryption methods on the ticket, some authorization
+        data requires the additional protection provided by the
+        CAMMAC.
       </t>
       <t>
-	Extracting a CAMMAC from a ticket for use as a credential
-	removes it from the context of the ticket. In the general
-	case, this could turn it into a bearer token, with all of the
-	associated security implications. Also, the CAMMAC does not
-	itself contain sufficient information to identify the client
-	principal. Therefore, application protocols that rely on
-	extracted CAMMACs might need to duplicate a substantial
-	portion of the ticket contents and include that duplicated
-	information in the authorization data contained within the
-	CAMMAC.
+        Extracting a CAMMAC from a ticket for use as a credential
+        removes it from the context of the ticket. In the general
+        case, this could turn it into a bearer token, with all of the
+        associated security implications. Also, the CAMMAC does not
+        itself necessarily contain sufficient information to identify
+        the client principal (if the encoding of AD-CAMMAC-BINDING is
+        omitted from the transmitted CAMMAC). Therefore, application
+        protocols that rely on extracted CAMMACs might need to
+        duplicate a substantial portion of the ticket contents and
+        include that duplicated information in the authorization data
+        contained within the CAMMAC.
       </t>
       <t>
-	A KDC that needs to verify the contents of a CAMMAC in a
-	non-TGS service ticket MUST ensure that the CAMMAC in the
-	ticket is the same one that it inserted into the ticket. A
-	malicious service could substitute legitimate CAMMACs from
-	other tickets that it has received (but not fabricate
-	completely new CAMMACs) into a service ticket. A CAMMAC by
-	itself does not contain sufficient information to accomplish
-	this.
+        A KDC that needs to verify the contents of a CAMMAC in a
+        non-TGS service ticket MUST ensure that the CAMMAC in the
+        ticket is the same one that it inserted into the ticket. A
+        malicious service could substitute legitimate CAMMACs from
+        other tickets that it has received (but not fabricate
+        completely new CAMMACs) into a service ticket. A CAMMAC by
+        itself does not contain sufficient information to accomplish
+        this.
       </t>
     </section>
 
@@ -370,11 +410,11 @@
       <reference anchor="X.680">
         <front>
           <title>
-	    Information technology -- Abstract Syntax Notation One
-	    (ASN.1): Specification of basic notation -- ITU-T
-	    Recommendation X.680 (ISO/IEC International Standard
-	    8824-1:2008)
-	  </title>
+            Information technology -- Abstract Syntax Notation One
+            (ASN.1): Specification of basic notation -- ITU-T
+            Recommendation X.680 (ISO/IEC International Standard
+            8824-1:2008)
+          </title>
 
           <author surname="ISO">
             <organization>ISO</organization>
@@ -387,12 +427,12 @@
       <reference anchor="X.690">
         <front>
           <title>
-	    Information technology -- ASN.1 encoding rules:
-	    Specification of Basic Encoding Rules (BER), Canonical
-	    Encoding Rules (CER) and Distinguished Encoding Rules
-	    (DER) -- ITU-T Recommendation X.690 (ISO/IEC International
-	    Standard 8825-1:2008)
-	  </title>
+            Information technology -- ASN.1 encoding rules:
+            Specification of Basic Encoding Rules (BER), Canonical
+            Encoding Rules (CER) and Distinguished Encoding Rules
+            (DER) -- ITU-T Recommendation X.690 (ISO/IEC International
+            Standard 8825-1:2008)
+          </title>
 
           <author surname="ISO">
             <organization>ISO</organization>

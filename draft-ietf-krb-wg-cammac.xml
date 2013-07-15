@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-krb-wg-cammac-04"
+<rfc category="std" docName="draft-ietf-krb-wg-cammac-05"
      ipr="trust200902" updates="4120">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -98,7 +98,7 @@
       </address>
     </author>
 
-    <date month="Feb" year="2013" />
+    <date month="July" year="2013" />
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -245,11 +245,7 @@
          mac            [3] Checksum
    }
 
-   AD-CAMMAC-BINDING    ::= SEQUENCE {
-        cname           [0] PrincipalName,
-        authtime        [1] KerberosTime,
-        endtime         [2] KerberosTime
-   }
+   AD-CAMMAC-BINDING    ::= OCTET STRING
 
    END
 
@@ -287,12 +283,21 @@
             <t hangText="AD-CAMMAC-BINDING:">
               <vspace/>
 
-              An AuthorizationData element that binds the CAMMAC
-              contents to the enclosing ticket.  This
-              AuthorizationData element has ad-type number TBD, and
-              MUST be absent from the transmitted elements field of
-              the AD-CAMMAC.  It MUST be included in the computation
-              of the Verifiers as if it were the first element.
+              An optional AuthorizationData element that binds the
+              CAMMAC contents to the enclosing ticket.  This
+              AuthorizationData element has ad-type number TBD, and if
+              it appears in the AD-CAMMAC, it MUST be the first member
+              of the elements field of the AD-CAMMAC.
+	      <vspace/>
+
+	      The contents of the AD-CAMMAC-BINDING element are a
+	      local matter for the KDC implementation.  A KDC can use
+	      this element to checksum portions of the ticket outside
+	      of the CAMMAC, to ensure that a service has not tampered
+	      with them.  This can be useful if the KDC implements a
+	      capability resembling the Windows <xref
+		target="MS-SFU">Constrained Delegation
+		(S4U2Proxy)</xref> extension.
             </t>
             <t hangText="kdc-verifier:">
               <vspace/>
@@ -357,12 +362,11 @@
         case, this could turn it into a bearer token, with all of the
         associated security implications. Also, the CAMMAC does not
         itself necessarily contain sufficient information to identify
-        the client principal (if the encoding of AD-CAMMAC-BINDING is
-        omitted from the transmitted CAMMAC). Therefore, application
-        protocols that rely on extracted CAMMACs might need to
-        duplicate a substantial portion of the ticket contents and
-        include that duplicated information in the authorization data
-        contained within the CAMMAC.
+        the client principal. Therefore, application protocols that
+        rely on extracted CAMMACs might need to duplicate a
+        substantial portion of the ticket contents and include that
+        duplicated information in the authorization data contained
+        within the CAMMAC.
       </t>
       <t>
         A KDC that needs to verify the contents of a CAMMAC in a
@@ -475,6 +479,17 @@
 
           <date year="1988" />
         </front>
+      </reference>
+      <reference anchor="MS-SFU"
+	target="http://msdn.microsoft.com/en-us/library/cc246071.aspx">
+	<front>
+	  <title>[MS-SFU]: Kerberos Protocol Extensions: Service for
+	    User and Constrained Delegation Protocol</title>
+	  <author>
+	    <organization>Microsoft</organization>
+	  </author>
+	  <date year="2013" month="January"/>
+	</front>
       </reference>
     </references>
 

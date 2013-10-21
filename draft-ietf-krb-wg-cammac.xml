@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-krb-wg-cammac-05"
+<rfc category="std" docName="draft-ietf-krb-wg-cammac-06"
      ipr="trust200902" updates="4120">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -98,7 +98,7 @@
       </address>
     </author>
 
-    <date month="July" year="2013" />
+    <date month="October" year="2013" />
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -140,12 +140,13 @@
       <t>
         This document specifies a new Authorization Data container for
         Kerberos, called AD-CAMMAC (Container Authenticated by
-        Multiple MACs), that supersedes AD-KDC-ISSUED. The container
-        allows both the receiving application service and the Key
-        Distribution Center (KDC) itself to verify the authenticity of
-        the contained authorization data. The AD-CAMMAC container can
-        also include additional verifiers that "trusted services" can
-        use to verify the contained authorization data.
+        Multiple MACs), that supersedes AD-KDC-ISSUED. This new
+        container allows both the receiving application service and
+        the Key Distribution Center (KDC) itself to verify the
+        authenticity of the contained authorization data. The
+        AD-CAMMAC container can also include additional verifiers that
+        "trusted services" can use to verify the contained
+        authorization data.
       </t>
     </section>
 
@@ -156,67 +157,76 @@
       target="RFC2119">RFC 2119</xref>.</t>
     </section>
 
-    <section title="Validation">
+    <section title="Motivations">
       <t>
-        Kerberos ticket authorization data are highly sensitive and
-        must be validated to insure that no tampering has
-        occurred. Although
-        authorization data are in the encrypted part of a Kerberos
-        ticket and therefore have their integrity protected by the
-        ticket encryption, clients can request that KDCs insert
-        potentially arbitrary authorization data into tickets on their
-        behalf. The Kerberos protocol specifications allow this client
-        behavior
-        because the originally envisioned usage of authorization data
-        was to serve as restrictions on the client's
-        privileges. Services that need to interpret specific
-        authorization data as granting increased privileges need some
-        way to ensure that the KDC originated those authorization
-        data.
+	The new AD-CAMMAC authorization data container specified in
+	this document is an improvement upon AD-KDC-ISSUED because it
+	provides assurance to the KDC that the service named in the
+	ticket did not tamper with the contained authorization data.
+	By adding MACs verifiable by the KDC and trusted services,
+	AD-CAMMAC enables several new use cases for the Kerberos
+	protocol that AD-KDC-ISSUED does not accommodate.
       </t>
-
-      <t> In order to validate any information, the receiving
-      application service needs to be
-      able to cryptographically verify the data. This is done by introducing a
-      new AuthorizationData element called AD-CAMMAC that contains enough
-      information to bind the contents to a principal in a way that a receiving
-      application service can verify autonomously without further
-      contact with the KDC.</t>
-
-      <t>The following information is needed:
-        <list style="symbols">
-          <t>The KDC MAC</t>
-
-          <t>The Service MAC</t>
-
-          <t>Optional Trusted Service MAC</t>
-        </list>
+      <t>
+	The existing AD-KDC-ISSUED authorization data container allows
+	a service to verify that the KDC has issued the contained
+	authorization data.  However, because the symmetric key for
+	the MAC is known to both the KDC and the service, the KDC
+	cannot generally detect whether the service has forged the
+	contents of an AD-KDC-ISSUED container in an existing ticket.
+	The new kdc-verifier MAC in the AD-CAMMAC container, because
+	it uses a key known only to the KDC, allows the KDC to verify
+	the integrity of the contents of that container.
       </t>
-
-      <t>The KDC MAC is required to allow the KDC to validate the data
-      without needing to recompute the contents at every Ticket
-      Granting Service (TGS) request.</t>
-
-      <t>The Service MAC is required so that the Service can verify that
-      the authorization data has been validated by the KDC.</t>
-
-      <t>The Trusted Service MAC is useful to verify the authenticity of
-      the contents on the same host, when the data is received by a less
-      trusted service and passed to a more trusted service on the same host
-      without the need for additional round trips to the KDC.</t>
-
-      <t>The ad-type for AD-CAMMAC is (TBD).</t>
-
+      <t>
+	For example, the new AD-CAMMAC container can protect
+	authorization data when using the Constrained Delegation
+	(<xref target="MS-SFU">S4U2Proxy</xref>) protocol extension.
+	This extension allows a service to use a ticket to itself as
+	evidence that it received a user request and consequently ask
+	the KDC to issue a new ticket on behalf of the user to perform
+	operations against another service.
+      </t>
+      <t>
+	If the KDC had issued a AD-KDC-ISSUED container in the
+	S4U2Proxy evidence ticket instead of AD-CAMMAC, it would have
+	no way to subsequently verify whether the service had tampered
+	with the contents of that container.  The service would know
+	the key for the MAC for the AD-KDC-ISSUED container in the
+	evidence ticket, and could therefore forge its contents.
+      </t>
+      <t>
+	The kdc-verifier MAC in the AD-CAMMAC container allows a KDC
+	to verify the integrity of the contained authorization data
+	without having to compute all of the authorization data, an
+	operation that might not always be possible when the data
+	contains ephemeral information such as the strength or type of
+	authentication method used to obtain the original ticket.
+      </t>
+      <t>
+	A lesser-privileged service on a host may receive an
+	authentication from a client, and might then ask a
+	higher-privileged service ("trusted service") on the same host
+	to act on behalf of the client.  To demonstrate that the
+	client has authenticated to it, the lesser-privileged service
+	can extract the AD-CAMMAC container from the ticket and submit
+	it to the trusted service.  The trusted service can either ask
+	a specialized service (not yet specified) on the KDC to
+	validate the AD-CAMMAC container, or use verify the optional
+	additional verifiers (the other-verifiers field) that are part
+	of the AD-CAMMAC.
+      </t>
     </section>
 
     <section title="Encoding">
       <t>
         The Kerberos protocol is defined in <xref target="RFC4120"/>
         using Abstract Syntax Notation One (ASN.1) <xref
-        target="X.680"/><xref target="X.690"/>. As such, this
-        specification also uses the ASN.1 syntax for specifying both
-        the abstract layout of the AD-CAMMAC attributes, as well as
-        its encoding.
+        target="X.680"/><xref target="X.690"/>. For consistency, this
+        specification also uses the ASN.1 syntax for specifying the
+        layout of AD-CAMMAC.  The ad-data of the AD-CAMMAC
+        authorization data element is the ASN.1 DER encoding of the
+        AD-CAMMAC ASN.1 type specified below.
       </t>
 
       <section title="AD-CAMMAC">
@@ -357,6 +367,13 @@
         CAMMAC.
       </t>
       <t>
+	Some protocol extensions such as S4U2Proxy allow the KDC to
+	issue a new ticket based on an evidence ticket provided by the
+	service.  If the evidence ticket contains authorization data
+	that needs to be preserved in the new ticket, then the KDC
+	MUST revalidate it.
+      </t>
+      <t>
         Extracting a CAMMAC from a ticket for use as a credential
         removes it from the context of the ticket. In the general
         case, this could turn it into a bearer token, with all of the
@@ -370,17 +387,26 @@
       </t>
       <t>
         A KDC that needs to verify the contents of a CAMMAC in a
-        non-TGS service ticket MUST ensure that the CAMMAC in the
-        ticket is the same one that it inserted into the ticket. A
-        malicious service could substitute legitimate CAMMACs from
-        other tickets that it has received (but not fabricate
-        completely new CAMMACs) into a service ticket. A CAMMAC by
-        itself does not contain sufficient information to accomplish
-        this.
+        non-TGS ticket MUST ensure that the CAMMAC in the ticket is
+        the same one that it inserted into the ticket. A malicious
+        service could substitute legitimate CAMMACs from other tickets
+        that it has received (but not fabricate completely new
+        CAMMACs) into a service ticket. A CAMMAC by itself does not
+        contain sufficient information to accomplish this, but
+        including an AD-CAMMAC-BINDING element could be sufficient.
       </t>
     </section>
 
-
+    <section title="Open Issues">
+      <t>
+	Consider making other-verifiers "[3] SEQUENCE (SIZE (1..MAX))
+	OF VERIFIER OPTIONAL" to make the common case encoding
+	smaller.
+      </t>
+      <t>
+	Enclose in AD-IF-RELEVANT?
+      </t>
+    </section>
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>TBD.</t>
     </section>

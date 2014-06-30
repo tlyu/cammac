@@ -5,19 +5,19 @@
 <!-- One method to get references from the online citation libraries.
      There has to be one entity for each item to be referenced. 
      An alternate method (rfc include) is described in the references. -->
-<!ENTITY RFC2307 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2307.xml">
-<!ENTITY RFC3961 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3961.xml">
-<!ENTITY RFC3962 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3962.xml">
-<!ENTITY RFC3713 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3713.xml">
-<!ENTITY RFC4120 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4120.xml">
-<!ENTITY RFC1510 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.1510.xml">
-<!ENTITY RFC4559 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4559.xml">
-<!ENTITY RFC2119 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2119.xml">
-<!ENTITY RFC2629 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2629.xml">
-<!ENTITY RFC3552 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.3552.xml">
-<!ENTITY RFC2898 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.2898.xml">
-<!ENTITY RFC4493 SYSTEM "http://xml.resource.org/public/rfc/bibxml/reference.RFC.4493.xml">
-<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml.resource.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+<!ENTITY RFC2307 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2307.xml">
+<!ENTITY RFC3961 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3961.xml">
+<!ENTITY RFC3962 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3962.xml">
+<!ENTITY RFC3713 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3713.xml">
+<!ENTITY RFC4120 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4120.xml">
+<!ENTITY RFC1510 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1510.xml">
+<!ENTITY RFC4559 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4559.xml">
+<!ENTITY RFC2119 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2629 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2629.xml">
+<!ENTITY RFC3552 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY RFC2898 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2898.xml">
+<!ENTITY RFC4493 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.4493.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
 ]>
 <?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
 <!-- used by XSLT processors -->
@@ -44,7 +44,7 @@
 <?rfc subcompact="no" ?>
 <!-- keep one blank line between list items -->
 <!-- end of list of popular I-D processing instructions -->
-<rfc category="std" docName="draft-ietf-krb-wg-cammac-07"
+<rfc category="std" docName="draft-ietf-krb-wg-cammac-08"
      ipr="trust200902" updates="4120">
   <!-- category values: std, bcp, info, exp, and historic
      ipr values: full3667, noModification3667, noDerivatives3667
@@ -98,7 +98,7 @@
       </address>
     </author>
 
-    <date month="May" year="2014" />
+    <date month="June" year="2014" />
 
     <!-- If the month and year are both specified and are the current ones, xml2rfc will fill 
          in the current day for you. If only the current year is specified, xml2rfc will fill 
@@ -185,19 +185,19 @@
 	the flow of authorization data is from the KDC to the service.
 	However, protocol extensions such as Constrained Delegation
 	(<xref target="MS-SFU">S4U2Proxy</xref>) require that a
-	service present to the KDC an "evidence" service ticket that
-	the service received from a client.  In the S4U2Proxy
-	extension, the KDC uses the evidence ticket as the basis for
-	issuing a derivative ticket that the service can then use to
-	impersonate the client.  The authorization data contained
-	within the evidence ticket constitute a flow of authorization
-	data from the application service to the KDC.  The properties
-	of the AD-KDC-ISSUED container are insufficient for this use
-	case because the service knows the symmetric key for the
-	checksum in the AD-KDC-ISSUED container.  Therefore, the KDC
-	has no way to detect whether the service has tampered with the
-	contents of the AD-KDC-ISSUED container within the evidence
-	ticket.
+	service present to the KDC a service ticket that the service
+	received from a client, as evidence that the client
+	authenticated to the service.  In the S4U2Proxy extension, the
+	KDC uses the evidence ticket as the basis for issuing a
+	derivative ticket that the service can then use to impersonate
+	the client.  The authorization data contained within the
+	evidence ticket constitute a flow of authorization data from
+	the application service to the KDC.  The properties of the
+	AD-KDC-ISSUED container are insufficient for this use case
+	because the service knows the symmetric key for the checksum
+	in the AD-KDC-ISSUED container.  Therefore, the KDC has no way
+	to detect whether the service has tampered with the contents
+	of the AD-KDC-ISSUED container within the evidence ticket.
       </t>
       <t>
 	The new AD-CAMMAC authorization data container specified in
@@ -306,8 +306,9 @@
               from context and MAY be omitted.  For the kdc-verifier,
               the MAC is computed differently than for the
               svc-verifier and the other-verifiers, as described
-              later.
-            </t>
+              later.  The key usage for computing the MAC (Checksum)
+              is 64.
+	    </t>
 
             <t hangText="kdc-verifier:">
               <vspace/>
@@ -355,10 +356,9 @@
               ticket with "host".  The checksum is computed using a
               long-term key of the identified principal, and the
               checksum type is the required checksum type for the
-              enctype of that long-term the key.  The kvno and enctype
+              enctype of that long-term key.  The kvno and enctype
               SHOULD be specified to disambiguate which of the
-              long-term keys of the trusted service is used.  The key
-              usage is TBD.
+              long-term keys of the trusted service is used.
             </t>
           </list>
         </t>
@@ -366,13 +366,24 @@
     </section>
 
     <section title="Assigned numbers">
-      <t>TBD</t>
+      <t>The ad-type number for AD-CAMMAC is 96.</t>
+      <t>
+	The key usage number for the Verifier-MAC checksum is 64.
+      </t>
     </section>
 
     <!-- Possibly a 'Contributors' section ... -->
 
     <section anchor="IANA" title="IANA Considerations">
-      <t>TBD.</t>
+      <t>
+	[ RFC Editor: please remove this section prior to
+	publication. ]
+      </t>
+      <t>
+	There are no IANA considerations in this document.  Any
+	numbers assigned in this document are not in IANA-controlled
+	number spaces.
+      </t>
     </section>
 
     <section anchor="Security" title="Security Considerations">
@@ -414,18 +425,11 @@
       </t>
     </section>
 
-    <section title="Open Issues">
-      <t>
-	Allow an optional KDC-verified element, kdc-verifier-unbound,
-	that is not bound to the ticket contents?  This would allow a
-	KDC to provide the service of verifying an extracted CAMMAC
-	without needing a copy of the ticket ciphertext.
-      </t>
-    </section>
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-	Ben Kaduk and Zhanna Tsitkov provided helpful technical and
-	editorial feedback on earlier versions of this document.
+	Shawn Emery, Ben Kaduk, and Zhanna Tsitkov provided helpful
+	technical and editorial feedback on earlier versions of this
+	document.
       </t>
     </section>
   </middle>
@@ -536,10 +540,6 @@
 	</front>
       </reference>
     </references>
-
-    <section anchor="app-additional" title="Additional Stuff">
-      <t>This becomes an Appendix.</t>
-    </section>
 
     <!-- Change Log
 

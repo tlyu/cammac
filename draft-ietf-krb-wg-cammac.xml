@@ -185,19 +185,20 @@
 	the flow of authorization data is from the KDC to the service.
 	However, protocol extensions such as Constrained Delegation
 	(<xref target="MS-SFU">S4U2Proxy</xref>) require that a
-	service present to the KDC a service ticket that the service
-	received from a client, as evidence that the client
-	authenticated to the service.  In the S4U2Proxy extension, the
-	KDC uses the evidence ticket as the basis for issuing a
-	derivative ticket that the service can then use to impersonate
-	the client.  The authorization data contained within the
-	evidence ticket constitute a flow of authorization data from
-	the application service to the KDC.  The properties of the
-	AD-KDC-ISSUED container are insufficient for this use case
-	because the service knows the symmetric key for the checksum
-	in the AD-KDC-ISSUED container.  Therefore, the KDC has no way
-	to detect whether the service has tampered with the contents
-	of the AD-KDC-ISSUED container within the evidence ticket.
+	service present to the KDC a service ticket that the KDC
+	previously issued, as evidence that the service is authorized
+	to impersonate the client principal named in that ticket.  In
+	the S4U2Proxy extension, the KDC uses the evidence ticket as
+	the basis for issuing a derivative ticket that the service can
+	then use to impersonate the client.  The authorization data
+	contained within the evidence ticket constitute a flow of
+	authorization data from the application service to the KDC.
+	The properties of the AD-KDC-ISSUED container are insufficient
+	for this use case because the service knows the symmetric key
+	for the checksum in the AD-KDC-ISSUED container.  Therefore,
+	the KDC has no way to detect whether the service has tampered
+	with the contents of the AD-KDC-ISSUED container within the
+	evidence ticket.
       </t>
       <t>
 	The new AD-CAMMAC authorization data container specified in
@@ -427,9 +428,9 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-	Shawn Emery, Ben Kaduk, and Zhanna Tsitkov provided helpful
-	technical and editorial feedback on earlier versions of this
-	document.
+	Shawn Emery, Ben Kaduk, Zhanna Tsitkov, and Kai Zheng provided
+	helpful technical and editorial feedback on earlier versions
+	of this document.
       </t>
     </section>
   </middle>

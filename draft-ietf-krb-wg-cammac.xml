@@ -246,11 +246,10 @@
         specified below.
       </t>
 
-      <section title="AD-CAMMAC">
-        <figure>
-          <preamble></preamble>
+      <figure>
+        <preamble></preamble>
 
-          <artwork><![CDATA[
+        <artwork><![CDATA[
    KerberosV5CAMMAC DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
    AD-CAMMAC                   ::= SEQUENCE {
@@ -275,96 +274,92 @@
 
    END
 
-        ]]></artwork>
+]]></artwork>
 
-          <postamble></postamble>
-        </figure>
-        <t>
-          <list style="hanging">
-            <t hangText="elements:">
-              <vspace/>
+        <postamble></postamble>
+      </figure>
+      <t>
+        <list style="hanging">
+          <t hangText="elements:">
+            <vspace/>
 
-              A sequence of authorization data elements issued by the
-              KDC.  These elements are the authorization data that the
-              verifier fields authenticate.
-            </t>
-            <t hangText="Verifier:">
-              <vspace/>
+            A sequence of authorization data elements issued by the
+            KDC.  These elements are the authorization data that the
+            verifier fields authenticate.
+          </t>
+          <t hangText="Verifier:">
+            <vspace/>
 
-              A CHOICE type that currently contains only one
-              alternative: Verifier-MAC.  Future extensions might add
-              support for public-key signatures.
-            </t>
+            A CHOICE type that currently contains only one
+            alternative: Verifier-MAC.  Future extensions might add
+            support for public-key signatures.
+          </t>
 
-            <t hangText="Verifier-MAC:">
-              <vspace/>
+          <t hangText="Verifier-MAC:">
+            <vspace/>
 
-              Contains a MAC computed over the ASN.1 DER encoding of
-              the AuthorizationData value in the elements field of the
-              AD-CAMMAC.  The identifier, kvno, and enctype fields
-              help the recipient locate the key required for verifying
-              the MAC.  For the kdc-verifier and the svc-verifier, the
-              identifier, kvno and enctype fields are often obvious
-              from context and MAY be omitted.  For the kdc-verifier,
-              the MAC is computed differently than for the
-              svc-verifier and the other-verifiers, as described
-              later.  The key usage for computing the MAC (Checksum)
-              is 64.
-            </t>
+            Contains a MAC computed over the ASN.1 DER encoding of the
+            AuthorizationData value in the elements field of the
+            AD-CAMMAC.  The identifier, kvno, and enctype fields help
+            the recipient locate the key required for verifying the
+            MAC.  For the kdc-verifier and the svc-verifier, the
+            identifier, kvno and enctype fields are often obvious from
+            context and MAY be omitted.  For the kdc-verifier, the MAC
+            is computed differently than for the svc-verifier and the
+            other-verifiers, as described later.  The key usage for
+            computing the MAC (Checksum) is 64.
+          </t>
 
-            <t hangText="kdc-verifier:">
-              <vspace/>
+          <t hangText="kdc-verifier:">
+            <vspace/>
 
-              A Verifier-MAC where the key is a long-term key of the
-              local Ticket-Granting Service (TGS).  The checksum type
-              is the required checksum type for the enctype of the TGS
-              key.  In contrast to the other Verifier-MAC elements,
-              the KDC computes the MAC in the kdc-verifier over the
-              ASN.1 DER encoding of the EncTicketPart of the
-              surrounding ticket, but where the AuthorizationData
-              value in the EncTicketPart contains the
-              AuthorizationData value contained in the CAMMAC instead
-              of the AuthorizationData value that would otherwise be
-              present in the ticket.  This altered Verifier-MAC
-              computation binds the kdc-verifier to the other contents
-              of the ticket, assuring the KDC that a malicious service
-              has not substituted a mismatched CAMMAC received from
-              another ticket.
-            </t>
-            <t hangText="svc-verifier:">
-              <vspace/>
+            A Verifier-MAC where the key is a long-term key of the
+            local Ticket-Granting Service (TGS).  The checksum type is
+            the required checksum type for the enctype of the TGS key.
+            In contrast to the other Verifier-MAC elements, the KDC
+            computes the MAC in the kdc-verifier over the ASN.1 DER
+            encoding of the EncTicketPart of the surrounding ticket,
+            but where the AuthorizationData value in the EncTicketPart
+            contains the AuthorizationData value contained in the
+            CAMMAC instead of the AuthorizationData value that would
+            otherwise be present in the ticket.  This altered
+            Verifier-MAC computation binds the kdc-verifier to the
+            other contents of the ticket, assuring the KDC that a
+            malicious service has not substituted a mismatched CAMMAC
+            received from another ticket.
+          </t>
+          <t hangText="svc-verifier:">
+            <vspace/>
 
-              A Verifier-MAC where the key is the same long-term
-              service key that the KDC uses to encrypt the surrounding
-              ticket.  The checksum type is the required checksum type
-              for the enctype of the service key used to encrypt the
-              ticket.  This field MUST be present if the service
-              principal of the ticket is not the local TGS, including
-              when the ticket is a cross-realm TGT.
-            </t>
+            A Verifier-MAC where the key is the same long-term service
+            key that the KDC uses to encrypt the surrounding ticket.
+            The checksum type is the required checksum type for the
+            enctype of the service key used to encrypt the ticket.
+            This field MUST be present if the service principal of the
+            ticket is not the local TGS, including when the ticket is
+            a cross-realm TGT.
+          </t>
 
-            <t hangText="other-verifiers:">
-              <vspace/>
+          <t hangText="other-verifiers:">
+            <vspace/>
 
-              A sequence of additional verifiers.  In each additional
-              Verifier-MAC, the key is a long-term key of the
-              principal name specified in the identifier field.  The
-              PrincipalName MUST be present and be a valid principal
-              in the realm.  KDCs MAY add one or more "trusted
-              service" verifiers.  Unless otherwise administratively
-              configured, the KDC SHOULD determine the "trusted
-              service" principal name by replacing the service
-              identifier component of the sname of the surrounding
-              ticket with "host".  The checksum is computed using a
-              long-term key of the identified principal, and the
-              checksum type is the required checksum type for the
-              enctype of that long-term key.  The kvno and enctype
-              SHOULD be specified to disambiguate which of the
-              long-term keys of the trusted service is used.
-            </t>
-          </list>
-        </t>
-      </section>
+            A sequence of additional verifiers.  In each additional
+            Verifier-MAC, the key is a long-term key of the principal
+            name specified in the identifier field.  The PrincipalName
+            MUST be present and be a valid principal in the realm.
+            KDCs MAY add one or more "trusted service" verifiers.
+            Unless otherwise administratively configured, the KDC
+            SHOULD determine the "trusted service" principal name by
+            replacing the service identifier component of the sname of
+            the surrounding ticket with "host".  The checksum is
+            computed using a long-term key of the identified
+            principal, and the checksum type is the required checksum
+            type for the enctype of that long-term key.  The kvno and
+            enctype SHOULD be specified to disambiguate which of the
+            long-term keys of the trusted service is used.
+          </t>
+        </list>
+      </t>
     </section>
 
     <section title="Assigned numbers">

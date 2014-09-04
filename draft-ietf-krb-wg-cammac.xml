@@ -362,6 +362,17 @@
       </t>
     </section>
 
+    <section title="Usage">
+      <t>
+        Application servers and KDCs MAY ignore the AD-CAMMAC
+        container and the authorization data elements it contains.
+        For compatibility with older Kerberos implementations, a KDC
+        issuing an AD-CAMMAC SHOULD enclose it in an AD-IF-RELEVANT
+        container unless the KDC knows that the application server is
+        likely to recognize it.
+      </t>
+    </section>
+
     <section title="Assigned numbers">
       <t>The ad-type number for AD-CAMMAC is 96.</t>
       <t>

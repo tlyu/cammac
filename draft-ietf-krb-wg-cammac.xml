@@ -458,9 +458,9 @@
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-        Shawn Emery, Greg Hudson, Ben Kaduk, Zhanna Tsitkov, and Kai
-        Zheng provided helpful technical and editorial feedback on
-        earlier versions of this document.
+        Shawn Emery, Sam Hartman, Greg Hudson, Ben Kaduk, Zhanna
+        Tsitkov, and Kai Zheng provided helpful technical and
+        editorial feedback on earlier versions of this document.
       </t>
     </section>
   </middle>

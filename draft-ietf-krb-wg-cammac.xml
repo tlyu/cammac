@@ -159,78 +159,78 @@
 
     <section title="Motivations">
       <t>
-	The Kerberos protocol allows clients to submit arbitrary
-	authorization data for a KDC to insert into a Kerberos ticket.
-	These client-requested authorization data allow the client to
-	express authorization restrictions that the application
-	service will interpret.  With few exceptions, the KDC can
-	safely copy these client-requested authorization data to the
-	issued ticket without necessarily inspecting, interpreting, or
-	filtering their contents.
+        The Kerberos protocol allows clients to submit arbitrary
+        authorization data for a KDC to insert into a Kerberos ticket.
+        These client-requested authorization data allow the client to
+        express authorization restrictions that the application
+        service will interpret.  With few exceptions, the KDC can
+        safely copy these client-requested authorization data to the
+        issued ticket without necessarily inspecting, interpreting, or
+        filtering their contents.
       </t>
       <t>
-	The AD-KDC-ISSUED authorization data container specified in
-	<xref target="RFC4120">RFC 4120</xref> is a means for KDCs to
-	include positive or permissive (rather than restrictive)
-	authorization data in service tickets in a way that the
-	service named in a ticket can verify that the KDC has issued
-	the contained authorization data.  This capability takes
-	advantage of a shared symmetric key between the KDC and the
-	service to assure the service that the KDC did not merely copy
-	client-requested authorization data to the ticket without
-	inspecting them.
+        The AD-KDC-ISSUED authorization data container specified in
+        <xref target="RFC4120">RFC 4120</xref> is a means for KDCs to
+        include positive or permissive (rather than restrictive)
+        authorization data in service tickets in a way that the
+        service named in a ticket can verify that the KDC has issued
+        the contained authorization data.  This capability takes
+        advantage of a shared symmetric key between the KDC and the
+        service to assure the service that the KDC did not merely copy
+        client-requested authorization data to the ticket without
+        inspecting them.
       </t>
       <t>
-	The AD-KDC-ISSUED container works well for situations where
-	the flow of authorization data is from the KDC to the service.
-	However, protocol extensions such as Constrained Delegation
-	(<xref target="MS-SFU">S4U2Proxy</xref>) require that a
-	service present to the KDC a service ticket that the KDC
-	previously issued, as evidence that the service is authorized
-	to impersonate the client principal named in that ticket.  In
-	the S4U2Proxy extension, the KDC uses the evidence ticket as
-	the basis for issuing a derivative ticket that the service can
-	then use to impersonate the client.  The authorization data
-	contained within the evidence ticket constitute a flow of
-	authorization data from the application service to the KDC.
-	The properties of the AD-KDC-ISSUED container are insufficient
-	for this use case because the service knows the symmetric key
-	for the checksum in the AD-KDC-ISSUED container.  Therefore,
-	the KDC has no way to detect whether the service has tampered
-	with the contents of the AD-KDC-ISSUED container within the
-	evidence ticket.
+        The AD-KDC-ISSUED container works well for situations where
+        the flow of authorization data is from the KDC to the service.
+        However, protocol extensions such as Constrained Delegation
+        (<xref target="MS-SFU">S4U2Proxy</xref>) require that a
+        service present to the KDC a service ticket that the KDC
+        previously issued, as evidence that the service is authorized
+        to impersonate the client principal named in that ticket.  In
+        the S4U2Proxy extension, the KDC uses the evidence ticket as
+        the basis for issuing a derivative ticket that the service can
+        then use to impersonate the client.  The authorization data
+        contained within the evidence ticket constitute a flow of
+        authorization data from the application service to the KDC.
+        The properties of the AD-KDC-ISSUED container are insufficient
+        for this use case because the service knows the symmetric key
+        for the checksum in the AD-KDC-ISSUED container.  Therefore,
+        the KDC has no way to detect whether the service has tampered
+        with the contents of the AD-KDC-ISSUED container within the
+        evidence ticket.
       </t>
       <t>
-	The new AD-CAMMAC authorization data container specified in
-	this document improves upon AD-KDC-ISSUED by including
-	additional verifier elements.  The svc-verifier element of the
-	CAMMAC has the same functional and security properties as the
-	ad-checksum element of AD-KDC-ISSUED; the svc-verifier allows
-	the service to verify the integrity of the AD-CAMMAC contents
-	as it already could with the AD-KDC-ISSUED container.  The
-	kdc-verifier and other-verifiers elements are new to AD-CAMMAC
-	and provide its enhanced capabilities.
+        The new AD-CAMMAC authorization data container specified in
+        this document improves upon AD-KDC-ISSUED by including
+        additional verifier elements.  The svc-verifier element of the
+        CAMMAC has the same functional and security properties as the
+        ad-checksum element of AD-KDC-ISSUED; the svc-verifier allows
+        the service to verify the integrity of the AD-CAMMAC contents
+        as it already could with the AD-KDC-ISSUED container.  The
+        kdc-verifier and other-verifiers elements are new to AD-CAMMAC
+        and provide its enhanced capabilities.
       </t>
       <t>
-	The kdc-verifier element of the AD-CAMMAC container allows a
-	KDC to verify the integrity of authorization data that it
-	previously inserted into a ticket, by using a key that only
-	the KDC knows.  The KDC thus avoids recomputing all of the
-	authorization data for the issued ticket; this operation might
-	not always be possible when that data includes ephemeral
-	information such as the strength or type of authentication
-	method used to obtain the original ticket.
+        The kdc-verifier element of the AD-CAMMAC container allows a
+        KDC to verify the integrity of authorization data that it
+        previously inserted into a ticket, by using a key that only
+        the KDC knows.  The KDC thus avoids recomputing all of the
+        authorization data for the issued ticket; this operation might
+        not always be possible when that data includes ephemeral
+        information such as the strength or type of authentication
+        method used to obtain the original ticket.
       </t>
       <t>
-	The verifiers in the other-verifiers element of the AD-CAMMAC
-	container are not required, but can be useful when a
-	lesser-privileged service receives a ticket from a client and
-	needs to extract the CAMMAC to demonstrate to a
-	higher-privileged "trusted service" on the same host that it
-	is legitimately acting on behalf of that client.  The trusted
-	service can use a verifier in the other-verifiers element to
-	validate the contents of the CAMMAC without further
-	communication with the KDC.
+        The verifiers in the other-verifiers element of the AD-CAMMAC
+        container are not required, but can be useful when a
+        lesser-privileged service receives a ticket from a client and
+        needs to extract the CAMMAC to demonstrate to a
+        higher-privileged "trusted service" on the same host that it
+        is legitimately acting on behalf of that client.  The trusted
+        service can use a verifier in the other-verifiers element to
+        validate the contents of the CAMMAC without further
+        communication with the KDC.
       </t>
     </section>
 
@@ -310,7 +310,7 @@
               svc-verifier and the other-verifiers, as described
               later.  The key usage for computing the MAC (Checksum)
               is 64.
-	    </t>
+            </t>
 
             <t hangText="kdc-verifier:">
               <vspace/>
@@ -370,7 +370,7 @@
     <section title="Assigned numbers">
       <t>The ad-type number for AD-CAMMAC is 96.</t>
       <t>
-	The key usage number for the Verifier-MAC checksum is 64.
+        The key usage number for the Verifier-MAC checksum is 64.
       </t>
     </section>
 
@@ -378,13 +378,13 @@
 
     <section anchor="IANA" title="IANA Considerations">
       <t>
-	[ RFC Editor: please remove this section prior to
-	publication. ]
+        [ RFC Editor: please remove this section prior to
+        publication. ]
       </t>
       <t>
-	There are no IANA considerations in this document.  Any
-	numbers assigned in this document are not in IANA-controlled
-	number spaces.
+        There are no IANA considerations in this document.  Any
+        numbers assigned in this document are not in IANA-controlled
+        number spaces.
       </t>
     </section>
 
@@ -397,11 +397,11 @@
         provided by the CAMMAC.
       </t>
       <t>
-	Some protocol extensions such as S4U2Proxy allow the KDC to
-	issue a new ticket based on an evidence ticket provided by the
-	service.  If the evidence ticket contains authorization data
-	that needs to be preserved in the new ticket, then the KDC
-	MUST revalidate it.
+        Some protocol extensions such as S4U2Proxy allow the KDC to
+        issue a new ticket based on an evidence ticket provided by the
+        service.  If the evidence ticket contains authorization data
+        that needs to be preserved in the new ticket, then the KDC
+        MUST revalidate it.
       </t>
       <t>
         Extracting a CAMMAC from a ticket for use as a credential
@@ -418,51 +418,51 @@
         protocol.
       </t>
       <t>
-	The method for computing the kdc-verifier does not bind it to
-	any authorization data within the ticket but outside of the
-	CAMMAC.  At least one (non-standard) authorization data type,
-	AD-SIGNEDPATH, attempts to bind to other authorization data in
-	a ticket, and it is very difficult for two such authorization
-	data types to coexist.
+        The method for computing the kdc-verifier does not bind it to
+        any authorization data within the ticket but outside of the
+        CAMMAC.  At least one (non-standard) authorization data type,
+        AD-SIGNEDPATH, attempts to bind to other authorization data in
+        a ticket, and it is very difficult for two such authorization
+        data types to coexist.
       </t>
       <t>
-	To minimize ticket size when embedding CAMMACs in Kerberos
-	tickets, a KDC MAY omit the kdc-verifier from the CAMMAC when
-	it is not needed.  In this situation, the KDC cannot always
-	determine whether the CAMAMC contents are intact.  The KDC
-	MUST NOT create a new CAMMAC from an existing one unless the
-	existing CAMMAC has a valid kdc-verifier, with two exceptions.
+        To minimize ticket size when embedding CAMMACs in Kerberos
+        tickets, a KDC MAY omit the kdc-verifier from the CAMMAC when
+        it is not needed.  In this situation, the KDC cannot always
+        determine whether the CAMAMC contents are intact.  The KDC
+        MUST NOT create a new CAMMAC from an existing one unless the
+        existing CAMMAC has a valid kdc-verifier, with two exceptions.
       </t>
       <t>
-	Only KDCs for the local realm have knowledge of the local TGS
-	key, so the outer encryption of a local TGT is sufficient to
-	protect the CAMMAC of a local TGT from tampering, assuming
-	that all of the KDCs in the local realm consistently filter
-	out CAMMAC authorization data submitted by clients.  The KDC
-	MAY create a new CAMMAC from an existing CAMMAC lacking a
-	kdc-verifier if that CAMMAC is contained within a local TGT
-	and all of the local realm KDCs are configured to filter out
-	CAMMAC authorization data submitted by clients.
+        Only KDCs for the local realm have knowledge of the local TGS
+        key, so the outer encryption of a local TGT is sufficient to
+        protect the CAMMAC of a local TGT from tampering, assuming
+        that all of the KDCs in the local realm consistently filter
+        out CAMMAC authorization data submitted by clients.  The KDC
+        MAY create a new CAMMAC from an existing CAMMAC lacking a
+        kdc-verifier if that CAMMAC is contained within a local TGT
+        and all of the local realm KDCs are configured to filter out
+        CAMMAC authorization data submitted by clients.
       </t>
       <t>
-	An application service might be use the S4U2Proxy extension,
-	or the realm policy might disallow the use of S4U2Proxy by
-	that service.  In this situation, the application service
-	could modify the CAMMAC contents, but such modifications would
-	have no effect on other services.  The KDC MAY create a new
-	CAMMAC from an existing CAMMAC lacking a kdc-verifier if it is
-	inserting the new CAMMAC into a service ticket for the same
-	service principal as the ticket that contained the existing
-	CAMMAC, and if all of the realm's KDCs are configured to
-	reject S4U2Proxy requests made by that service principal.
+        An application service might be use the S4U2Proxy extension,
+        or the realm policy might disallow the use of S4U2Proxy by
+        that service.  In this situation, the application service
+        could modify the CAMMAC contents, but such modifications would
+        have no effect on other services.  The KDC MAY create a new
+        CAMMAC from an existing CAMMAC lacking a kdc-verifier if it is
+        inserting the new CAMMAC into a service ticket for the same
+        service principal as the ticket that contained the existing
+        CAMMAC, and if all of the realm's KDCs are configured to
+        reject S4U2Proxy requests made by that service principal.
       </t>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">
       <t>
-	Shawn Emery, Greg Hudson, Ben Kaduk, Zhanna Tsitkov, and Kai
-	Zheng provided helpful technical and editorial feedback on
-	earlier versions of this document.
+        Shawn Emery, Greg Hudson, Ben Kaduk, Zhanna Tsitkov, and Kai
+        Zheng provided helpful technical and editorial feedback on
+        earlier versions of this document.
       </t>
     </section>
   </middle>
@@ -562,15 +562,15 @@
         </front>
       </reference>
       <reference anchor="MS-SFU"
-	target="http://msdn.microsoft.com/en-us/library/cc246071.aspx">
-	<front>
-	  <title>[MS-SFU]: Kerberos Protocol Extensions: Service for
-	    User and Constrained Delegation Protocol</title>
-	  <author>
-	    <organization>Microsoft</organization>
-	  </author>
-	  <date year="2013" month="January"/>
-	</front>
+        target="http://msdn.microsoft.com/en-us/library/cc246071.aspx">
+        <front>
+          <title>[MS-SFU]: Kerberos Protocol Extensions: Service for
+            User and Constrained Delegation Protocol</title>
+          <author>
+            <organization>Microsoft</organization>
+          </author>
+          <date year="2013" month="January"/>
+        </front>
       </reference>
     </references>
 

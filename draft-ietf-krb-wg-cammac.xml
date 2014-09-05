@@ -443,7 +443,7 @@
         CAMMAC authorization data submitted by clients.
       </t>
       <t>
-        An application service might be use the S4U2Proxy extension,
+        An application service might not use the S4U2Proxy extension,
         or the realm policy might disallow the use of S4U2Proxy by
         that service.  In this situation, the application service
         could modify the CAMMAC contents, but such modifications would

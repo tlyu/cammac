@@ -451,8 +451,7 @@
         CAMMAC from an existing CAMMAC lacking a kdc-verifier if it is
         inserting the new CAMMAC into a service ticket for the same
         service principal as the ticket that contained the existing
-        CAMMAC, and if all of the realm's KDCs are configured to
-        reject S4U2Proxy requests made by that service principal.
+        CAMMAC, but MUST NOT place a kdc-verifier in the new CAMMAC.
       </t>
     </section>
 

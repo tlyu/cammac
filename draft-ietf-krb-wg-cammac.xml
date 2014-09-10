@@ -453,6 +453,22 @@
         service principal as the ticket that contained the existing
         CAMMAC, but MUST NOT place a kdc-verifier in the new CAMMAC.
       </t>
+      <t>
+        The kdc-verifier in CAMMAC does not bind the service principal
+        name to the CAMMAC contents, because the service principal
+        name is not part of the EncTicketPart.  An entity that has
+        access to the keys of two different service principals can
+        decrypt a ticket for one service and encrypt it in the key of
+        the other service, altering the svc-verifier to match.  Both
+        the kdc-verifier and the svc-verifier would still validate,
+        but the KDC never issued this fabricated ticket.  The impact
+        of this manipulation is minor if the CAMMAC contents only
+        communicate attributes related to the client.  If an
+        application requires an authenticated binding between the
+        service principal name and the CAMMAC or ticket contents, the
+        KDC MUST include in the CAMMAC some authorization data element
+        that names the service principal.
+      </t>
     </section>
 
     <section anchor="Acknowledgements" title="Acknowledgements">

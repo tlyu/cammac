@@ -427,7 +427,7 @@
         To minimize ticket size when embedding CAMMACs in Kerberos
         tickets, a KDC MAY omit the kdc-verifier from the CAMMAC when
         it is not needed.  In this situation, the KDC cannot always
-        determine whether the CAMAMC contents are intact.  The KDC
+        determine whether the CAMMAC contents are intact.  The KDC
         MUST NOT create a new CAMMAC from an existing one unless the
         existing CAMMAC has a valid kdc-verifier, with two exceptions.
       </t>

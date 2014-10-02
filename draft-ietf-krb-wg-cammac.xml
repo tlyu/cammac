@@ -445,9 +445,11 @@
       <t>
         An application service might not use the S4U2Proxy extension,
         or the realm policy might disallow the use of S4U2Proxy by
-        that service.  In this situation, the application service
+        that service.  In such situations where there is no flow of
+        authorization data from the service to the KDC, the application service
         could modify the CAMMAC contents, but such modifications would
-        have no effect on other services.  The KDC MAY create a new
+        have no effect on other services.  Because of the lack of
+        security impact, the KDC MAY create a new
         CAMMAC from an existing CAMMAC lacking a kdc-verifier if it is
         inserting the new CAMMAC into a service ticket for the same
         service principal as the ticket that contained the existing

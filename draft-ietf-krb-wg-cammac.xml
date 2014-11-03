@@ -241,7 +241,10 @@
         <preamble></preamble>
 
         <artwork><![CDATA[
-   KerberosV5CAMMAC DEFINITIONS EXPLICIT TAGS ::= BEGIN
+   KerberosV5CAMMAC {
+           iso(1) identified-organization(3) dod(6) internet(1)
+           security(5) kerberosV5(2) modules(4) cammac(7)
+   } DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
    IMPORTS
          AuthorizationData, PrincipalName, Checksum, UInt32, Int32

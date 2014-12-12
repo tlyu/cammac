@@ -131,7 +131,8 @@
       <t>
         This document specifies a new Authorization Data container for
         Kerberos, called AD-CAMMAC (Container Authenticated by
-        Multiple MACs), that supersedes AD-KDC-ISSUED. This new
+        Multiple MACs), that supersedes AD-KDC-ISSUED Authorization
+        Data type specified in <xref target="RFC4120"/>. This new
         container allows both the receiving application service and
         the Key Distribution Center (KDC) itself to verify the
         authenticity of the contained authorization data. The
@@ -371,8 +372,8 @@
         container and the authorization data elements it contains.
         For compatibility with older Kerberos implementations, a KDC
         issuing an AD-CAMMAC SHOULD enclose it in an AD-IF-RELEVANT
-        container unless the KDC knows that the application server is
-        likely to recognize it.
+        container <xref target="RFC4120"/> unless the KDC knows that
+        the application server is likely to recognize it.
       </t>
     </section>
 

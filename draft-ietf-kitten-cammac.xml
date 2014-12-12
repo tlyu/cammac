@@ -194,13 +194,14 @@
       <t>
         The new AD-CAMMAC authorization data container specified in
         this document improves upon AD-KDC-ISSUED by including
-        additional verifier elements.  The svc-verifier element of the
-        CAMMAC has the same functional and security properties as the
-        ad-checksum element of AD-KDC-ISSUED; the svc-verifier allows
-        the service to verify the integrity of the AD-CAMMAC contents
-        as it already could with the AD-KDC-ISSUED container.  The
-        kdc-verifier and other-verifiers elements are new to AD-CAMMAC
-        and provide its enhanced capabilities.
+        additional verifier elements.  The svc-verifier (service
+        verifier) element of the CAMMAC has the same functional and
+        security properties as the ad-checksum element of
+        AD-KDC-ISSUED; the svc-verifier allows the service to verify
+        the integrity of the AD-CAMMAC contents as it already could
+        with the AD-KDC-ISSUED container.  The kdc-verifier and
+        other-verifiers elements are new to AD-CAMMAC and provide its
+        enhanced capabilities.
       </t>
       <t>
         The kdc-verifier element of the AD-CAMMAC container allows a
@@ -339,7 +340,7 @@
             enctype of the service key used to encrypt the ticket.
             This field MUST be present if the service principal of the
             ticket is not the local TGS, including when the ticket is
-            a cross-realm TGT.
+            a cross-realm Ticket-Granting Ticket (TGT).
           </t>
 
           <t hangText="other-verifiers:">

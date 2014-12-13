@@ -209,8 +209,8 @@
         KDC to verify the integrity of authorization data that it
         previously inserted into a ticket, by using a key that only
         the KDC knows.  The KDC thus avoids recomputing all of the
-        authorization data for the issued ticket; this operation might
-        not always be possible when that data includes ephemeral
+        authorization data for the issued ticket; this recomputation
+        might not always be possible when that data includes ephemeral
         information such as the strength or type of authentication
         method used to obtain the original ticket.
       </t>
@@ -302,7 +302,7 @@
             <vspace/>
 
             Contains an <xref target="RFC3961">RFC 3961</xref> Checksum
-            (MAC) computed over the ASN.1 DER encoding of the
+	    (MAC) computed over the ASN.1 DER encoding of the
             AuthorizationData value in the elements field of the
             AD-CAMMAC.  The identifier, kvno, and enctype fields help
             the recipient locate the key required for verifying the
@@ -310,8 +310,8 @@
             identifier, kvno and enctype fields are often obvious from
             context and MAY be omitted.  For the kdc-verifier, the MAC
             is computed differently than for the svc-verifier and the
-            other-verifiers, as described later.  The key usage for
-            computing the MAC (Checksum) is 64.
+            other-verifiers, as described later.  The key usage number
+            for computing the MAC (Checksum) is 64.
           </t>
 
           <t hangText="kdc-verifier:">

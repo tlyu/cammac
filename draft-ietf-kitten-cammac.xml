@@ -413,7 +413,9 @@
         issue a new ticket based on an evidence ticket provided by the
         service.  If the evidence ticket contains authorization data
         that needs to be preserved in the new ticket, then the KDC
-        MUST revalidate it.
+        MUST verify the kdc-verifier prior to copying the contained
+        authorization data to a new CAMMAC, except in the two situations
+        enumerated below.
       </t>
       <t>
         Extracting a CAMMAC from a ticket for use as a credential

@@ -131,8 +131,9 @@
     <section title="Introduction">
       <t>
         This document specifies a new Authorization Data container for
-        Kerberos, called AD-CAMMAC (Container Authenticated by
-        Multiple MACs), that supersedes the AD-KDC-ISSUED Authorization
+        Kerberos, called the CAMMAC (Container Authenticated by
+        Multiple MACs).  The ASN.1 type implementing the CAMMAC concept
+        is the AD-CAMMAC, which supersedes the AD-KDC-ISSUED Authorization
         Data type specified in <xref target="RFC4120"/>. This new
         container allows both the receiving application service and
         the Key Distribution Center (KDC) itself to verify the
@@ -197,7 +198,7 @@
         The new AD-CAMMAC authorization data container specified in
         this document improves upon AD-KDC-ISSUED by including
         additional verifier elements.  The svc-verifier (service
-        verifier) element of the CAMMAC has the same functional and
+        verifier) element of the AD-CAMMAC has the same functional and
         security properties as the ad-checksum element of
         AD-KDC-ISSUED; the svc-verifier allows the service to verify
         the integrity of the AD-CAMMAC contents as it already could
@@ -219,11 +220,11 @@
         The verifiers in the other-verifiers element of the AD-CAMMAC
         container are not required, but can be useful when a
         lesser-privileged service receives a ticket from a client and
-        needs to extract the CAMMAC to demonstrate to a
+        needs to extract the AD-CAMMAC to demonstrate to a
         higher-privileged "trusted service" on the same host that it
         is legitimately acting on behalf of that client.  The trusted
         service can use a verifier in the other-verifiers element to
-        validate the contents of the CAMMAC without further
+        validate the contents of the AD-CAMMAC without further
         communication with the KDC.
       </t>
     </section>
@@ -326,11 +327,11 @@
             encoding of the EncTicketPart of the surrounding ticket,
             but where the AuthorizationData value in the EncTicketPart
             contains the AuthorizationData value contained in the
-            CAMMAC instead of the AuthorizationData value that would
+            AD-CAMMAC instead of the AuthorizationData value that would
             otherwise be present in the ticket.  This altered
             Verifier-MAC computation binds the kdc-verifier to the
             other contents of the ticket, assuring the KDC that a
-            malicious service has not substituted a mismatched CAMMAC
+            malicious service has not substituted a mismatched AD-CAMMAC
             received from another ticket.
           </t>
           <t hangText="svc-verifier:">

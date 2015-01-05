@@ -443,31 +443,33 @@
         it is not needed.  In this situation, the KDC cannot always
         determine whether the CAMMAC contents are intact.  The KDC
         MUST NOT create a new CAMMAC from an existing one unless the
-        existing CAMMAC has a valid kdc-verifier, with two exceptions.
-      </t>
-      <t>
-        Only KDCs for the local realm have knowledge of the local TGS
-        key, so the outer encryption of a local TGT is sufficient to
-        protect the CAMMAC of a local TGT from tampering, assuming
-        that all of the KDCs in the local realm consistently filter
-        out CAMMAC authorization data submitted by clients.  The KDC
-        MAY create a new CAMMAC from an existing CAMMAC lacking a
-        kdc-verifier if that CAMMAC is contained within a local TGT
-        and all of the local realm KDCs are configured to filter out
-        CAMMAC authorization data submitted by clients.
-      </t>
-      <t>
-        An application service might not use the S4U2Proxy extension,
-        or the realm policy might disallow the use of S4U2Proxy by
-        that service.  In such situations where there is no flow of
-        authorization data from the service to the KDC, the application service
-        could modify the CAMMAC contents, but such modifications would
-        have no effect on other services.  Because of the lack of
-        security impact, the KDC MAY create a new
-        CAMMAC from an existing CAMMAC lacking a kdc-verifier if it is
-        inserting the new CAMMAC into a service ticket for the same
-        service principal as the ticket that contained the existing
-        CAMMAC, but MUST NOT place a kdc-verifier in the new CAMMAC.
+        existing CAMMAC has a valid kdc-verifier, with two exceptions:
+        <list style="numbers">
+          <t>
+            Only KDCs for the local realm have knowledge of the local TGS
+            key, so the outer encryption of a local TGT is sufficient to
+            protect the CAMMAC of a local TGT from tampering, assuming
+            that all of the KDCs in the local realm consistently filter
+            out CAMMAC authorization data submitted by clients.  The KDC
+            MAY create a new CAMMAC from an existing CAMMAC lacking a
+            kdc-verifier if that CAMMAC is contained within a local TGT
+            and all of the local realm KDCs are configured to filter out
+            CAMMAC authorization data submitted by clients.
+          </t>
+          <t>
+            An application service might not use the S4U2Proxy extension,
+            or the realm policy might disallow the use of S4U2Proxy by
+            that service.  In such situations where there is no flow of
+            authorization data from the service to the KDC, the application service
+            could modify the CAMMAC contents, but such modifications would
+            have no effect on other services.  Because of the lack of
+            security impact, the KDC MAY create a new
+            CAMMAC from an existing CAMMAC lacking a kdc-verifier if it is
+            inserting the new CAMMAC into a service ticket for the same
+            service principal as the ticket that contained the existing
+            CAMMAC, but MUST NOT place a kdc-verifier in the new CAMMAC.
+          </t>
+        </list>
       </t>
       <t>
         The kdc-verifier in CAMMAC does not bind the service principal

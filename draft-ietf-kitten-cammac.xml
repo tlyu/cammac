@@ -410,6 +410,14 @@
 
     <section anchor="Security" title="Security Considerations">
       <t>
+	The CAMMAC provides data origin authentication for
+	authorization data contained in it, attesting that it
+	originated from the KDC.  This section describes the
+	precautions required to maintain the integrity of that data
+	origin authentication through various information flows
+	involving a Kerberos ticket containing a CAMMAC.
+      </t>
+      <t>
         Although authorization data are generally conveyed within the
         encrypted part of a ticket and are thereby protected by the
         existing encryption scheme used for the surrounding ticket,

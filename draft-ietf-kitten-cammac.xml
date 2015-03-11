@@ -439,7 +439,7 @@
         of the newly issued ticket based on properties of the
         ticket(s) accompanying the TGS-REQ.  This policy decision can
         involve filtering, transforming, or verbatim copying of the
-        orginal CAMMAC contents.  The following paragraphs provide
+        original CAMMAC contents.  The following paragraphs provide
         some guidance on formulating such policies.
       </t>
       <t>
@@ -496,7 +496,7 @@
             KDC, the application service could modify the CAMMAC
             contents, but such modifications would have no effect on
             other services.  Because of the lack of security impact,
-            the KDCM AY omit the kdc-verifier from a CAMMAC contained
+            the KDC MAY omit the kdc-verifier from a CAMMAC contained
             in a ticket for that service.
           </t>
         </list>

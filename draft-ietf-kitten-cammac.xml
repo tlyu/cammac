@@ -434,7 +434,7 @@
         enumerated below.
       </t>
       <t>
-        In general, when handling TGS-REQs containing CAMMACs, a KDC
+        In general, when handling a TGS-REQ containing a CAMMAC, a KDC
         makes a policy decision on how to produce the CAMMAC contents
         of the newly issued ticket based on properties of the
         ticket(s) accompanying the TGS-REQ.  This policy decision can

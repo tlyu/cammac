@@ -418,22 +418,6 @@
         involving a Kerberos ticket containing a CAMMAC.
       </t>
       <t>
-        Although authorization data are generally conveyed within the
-        encrypted part of a ticket and are thereby protected by the
-        existing encryption scheme used for the surrounding ticket,
-        some authorization data requires the additional protection
-        provided by the CAMMAC.
-      </t>
-      <t>
-        Some protocol extensions such as S4U2Proxy allow the KDC to
-        issue a new ticket based on an evidence ticket provided by the
-        service.  If the evidence ticket contains authorization data
-        that needs to be preserved in the new ticket, then the KDC
-        MUST verify the kdc-verifier prior to copying the contained
-        authorization data to a new CAMMAC, except in the two situations
-        enumerated below.
-      </t>
-      <t>
         In general, when handling a TGS-REQ containing a CAMMAC, a KDC
         makes a policy decision on how to produce the CAMMAC contents
         of the newly issued ticket based on properties of the
@@ -443,37 +427,52 @@
         some guidance on formulating such policies.
       </t>
       <t>
-        A KDC SHOULD only make verbatim copies of CAMMAC contents to a
-        new CAMMAC when it has authenticated the CAMMAC as originating
-        from a local realm KDC according to one of the criteria below:
+        A KDC verifies a CAMMAC as originating from a local realm KDC
+        when at least one of following the criteria is true:
         <list style="numbers">
           <t>
-            The kdc-verifier is present and validates properly;
+            The KDC successfully verifies the kdc-verifier; or
           </t>
           <t>
-            The svc-verifier is present, validates properly, and uses
-            a key known only to the local realm KDCs; or
+            The KDC successfully verifies the svc-verifier, and the
+            svc-verifier uses a key known only to the local realm
+            KDCs; or
           </t>
           <t>
             No verifiers are present, the ticket-encrypting key is
             known only to local realm KDCs, and all local realm KDCs
-            properly filter out client-submitted CAMMACs.
+            properly filter out client-submitted CAMMACs.  (This can
+            require particular caution in a realm that has KDCs with
+            mixed CAMMAC support, as might happen when incrementally
+            upgrading KDCs in a realm to support CAMMAC.)
           </t>
         </list>
+        For avoidance of doubt, a CAMMAC that originates from the
+        local realm might contain information that originates from
+        elsewhere.  Originating from the local realm means that a
+        local realm KDC attests that the CAMMAC contents conform to
+        the local realm's policy, regardless of the ultimate origin of
+        the information in the CAMMAC.
       </t>
       <t>
-        When a KDC makes verbatim copies of CAMMAC contents to a new
-        CAMMAC without having authenticated the first CAMMAC as
-        originating from a local realm KDC, it SHOULD NOT apply a
-        kdc-verifier to the new CAMMAC.  One possible exception is
-        when a realm's policy allows a KDC to make a verbatim copy of
-        CAMMAC contents from a cross-realm TGT from designated
-        "fully-trusted" remote realms.  The local realm KDC can safely
-        apply a kdc-verifier to a new CAMMAC based on the cross-realm
-        TGT, because the client realm name in the resulting new ticket
-        will be that of the remote realm.  The presence of a remote
-        client realm name allows the local realm KDC to identify the
-        originator of the CAMMAC contents as being a remote realm.
+        The circumstances under which a KDC applies a kdc-verifier to
+        a CAMMAC (or otherwise creates a CAMMAC that satisfies the
+        local origin criteria listed above) are a matter of local
+        policy.  Semantically, a CAMMAC that the KDC verifies as
+        originating from the local realm attests that the CAMMAC
+        contents conform to local policy.  Such a local policy can
+        include allowing verbatim copying of CAMMAC contents from
+        cross-realm TGTs from designated highly privileged remote
+        realms.
+      </t>
+      <t>
+        Usually, when a KDC verifies a CAMMAC as originating from the
+        local realm, the KDC can assume that the CAMMAC contents
+        continue to conform to the local realm's policies.  It is
+        generally safe for a KDC to make verbatim copies of the
+        contents of such a CAMMAC into a new CAMMAC when handling a
+        TGS-REQ.  Exceptions can include when the local realm's
+        policies materially change during the life of a CAMMAC.
       </t>
       <t>
         A KDC MAY omit the kdc-verifier from the CAMMAC when it is not
@@ -495,9 +494,10 @@
             is no flow of authorization data from the service to the
             KDC, the application service could modify the CAMMAC
             contents, but such modifications would have no effect on
-            other services.  Because of the lack of security impact,
-            the KDC MAY omit the kdc-verifier from a CAMMAC contained
-            in a ticket for that service.
+            other services.  Because of the lack of security impact to
+            other application services, the KDC MAY omit the
+            kdc-verifier from a CAMMAC contained in a ticket for that
+            service.
           </t>
         </list>
       </t>

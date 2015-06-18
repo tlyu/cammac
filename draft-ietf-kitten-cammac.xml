@@ -587,8 +587,8 @@
             8824-1:2008)
           </title>
 
-          <author surname="ISO">
-            <organization>ISO</organization>
+          <author>
+            <organization>ITU-T</organization>
           </author>
 
           <date year="2008" />
@@ -605,11 +605,11 @@
             Standard 8825-1:2008)
           </title>
 
-          <author surname="ISO">
-            <organization>ISO</organization>
+          <author>
+            <organization>ITU-T</organization>
           </author>
 
-          <date year="1997" />
+          <date year="2008" />
         </front>
       </reference>
 

@@ -447,12 +447,12 @@
             upgrading KDCs in a realm to support CAMMAC.)
           </t>
         </list>
-        For avoidance of doubt, a CAMMAC that originates from the
-        local realm might contain information that originates from
-        elsewhere.  Originating from the local realm means that a
-        local realm KDC attests that the CAMMAC contents conform to
-        the local realm's policy, regardless of the ultimate origin of
-        the information in the CAMMAC.
+        A CAMMAC that originates from the local realm might contain
+        information that originates from elsewhere.  Originating from
+        the local realm means that a local realm KDC attests that the
+        CAMMAC contents conform to the local realm's policy,
+        regardless of the ultimate origin of the information in the
+        CAMMAC.
       </t>
       <t>
         The circumstances under which a KDC applies a kdc-verifier to
@@ -462,8 +462,7 @@
         originating from the local realm attests that the CAMMAC
         contents conform to local policy.  Such a local policy can
         include allowing verbatim copying of CAMMAC contents from
-        cross-realm TGTs from designated highly privileged remote
-        realms.
+        cross-realm TGTs from designated remote realms.
       </t>
       <t>
         Usually, when a KDC verifies a CAMMAC as originating from the

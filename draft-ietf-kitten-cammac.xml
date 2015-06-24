@@ -418,13 +418,13 @@
         involving a Kerberos ticket containing a CAMMAC.
       </t>
       <t>
-        In general, when handling a TGS-REQ containing a CAMMAC, a KDC
-        makes a policy decision on how to produce the CAMMAC contents
-        of the newly issued ticket based on properties of the
-        ticket(s) accompanying the TGS-REQ.  This policy decision can
-        involve filtering, transforming, or verbatim copying of the
-        original CAMMAC contents.  The following paragraphs provide
-        some guidance on formulating such policies.
+        When handling a TGS-REQ containing a CAMMAC, a KDC makes a
+        policy decision on how to produce the CAMMAC contents of the
+        newly issued ticket based on properties of the ticket(s)
+        accompanying the TGS-REQ.  This policy decision can involve
+        filtering, transforming, or verbatim copying of the original
+        CAMMAC contents.  The following paragraphs provide some
+        guidance on formulating such policies.
       </t>
       <t>
         A KDC verifies a CAMMAC as originating from a local realm KDC
@@ -447,31 +447,35 @@
             upgrading KDCs in a realm to support CAMMAC.)
           </t>
         </list>
-        A CAMMAC that originates from the local realm might contain
+        A CAMMAC that originates from a local realm KDC might contain
         information that originates from elsewhere.  Originating from
-        the local realm means that a local realm KDC attests that the
-        CAMMAC contents conform to the local realm's policy,
+        a local realm KDC means that a local realm KDC attests that
+        the CAMMAC contents conform to the local realm's policy,
         regardless of the ultimate origin of the information in the
-        CAMMAC.
+        CAMMAC (which could be a remote realm in the case of a CAMMAC
+        contained in a cross-realm TGT).
       </t>
       <t>
-        The circumstances under which a KDC applies a kdc-verifier to
+        Local policy determines when a KDC can apply a kdc-verifier to
         a CAMMAC (or otherwise creates a CAMMAC that satisfies the
-        local origin criteria listed above) are a matter of local
-        policy.  Semantically, a CAMMAC that the KDC verifies as
-        originating from the local realm attests that the CAMMAC
-        contents conform to local policy.  Such a local policy can
+        local origin criteria listed above).  Semantically, a CAMMAC
+        that a KDC verifies as originating from a local realm KDC
+        attests that the CAMMAC contents conformed to local policy at
+        the time of creation of the CAMMAC.  Such a local policy can
         include allowing verbatim copying of CAMMAC contents from
-        cross-realm TGTs from designated remote realms.
+        cross-realm TGTs from designated remote realms and applying a
+        kdc-verifier to the new CAMMAC.
       </t>
       <t>
-        Usually, when a KDC verifies a CAMMAC as originating from the
-        local realm, the KDC can assume that the CAMMAC contents
+        Usually, when a KDC verifies a CAMMAC as originating from a
+        local realm KDC, the KDC can assume that the CAMMAC contents
         continue to conform to the local realm's policies.  It is
         generally safe for a KDC to make verbatim copies of the
         contents of such a CAMMAC into a new CAMMAC when handling a
-        TGS-REQ.  Exceptions can include when the local realm's
-        policies materially change during the life of a CAMMAC.
+        TGS-REQ.  Particularly strict implementations might conduct
+        additional policy checks on the contents of a CAMMAC
+        originating from a local realm KDC if the local realm's policy
+        materially changes during the life of the CAMMAC.
       </t>
       <t>
         A KDC MAY omit the kdc-verifier from the CAMMAC when it is not

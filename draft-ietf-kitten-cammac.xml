@@ -56,8 +56,7 @@
 
     <!-- Another author who claims to be an editor -->
 
-    <author fullname="Simo Sorce" initials="S.S." role="editor"
-            surname="Sorce">
+    <author fullname="Simo Sorce" initials="S.S." surname="Sorce">
       <organization>Red Hat</organization>
 
       <address>
@@ -67,22 +66,11 @@
       </address>
     </author>
 
-    <author fullname="Tom Yu" initials="T.Y." role="editor" surname="Yu">
-      <organization>MIT Kerberos Consortium</organization>
+    <author fullname="Tom Yu" initials="T.Y." surname="Yu">
+      <organization>MIT</organization>
 
       <address>
         <email>tlyu@mit.edu</email>
-
-        <!-- uri and facsimile elements may also be added -->
-      </address>
-    </author>
-
-    <author fullname="Thomas Hardjono" initials="T.H." role="editor"
-            surname="Hardjono">
-      <organization>MIT Kerberos Consortium</organization>
-
-      <address>
-        <email>hardjono@mit.edu</email>
 
         <!-- uri and facsimile elements may also be added -->
       </address>
@@ -551,7 +539,9 @@
         Shawn Emery, Sam Hartman, Greg Hudson, Ben Kaduk, Barry Leiba,
         Meral Shirazipour, Zhanna Tsitkov, Qin Wu, and Kai Zheng
         provided helpful technical and editorial feedback on earlier
-        versions of this document.
+        versions of this document.  Thomas Hardjono helped with the
+        initial editing to split this document from a predecessor
+        document that had a wider scope.
       </t>
     </section>
   </middle>
